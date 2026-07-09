@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humsafar — Akela Chal, Saathi Mil Jayega</title>
+  <link rel="stylesheet" href="style_v1.css">
+</head>
+
+<body>
+
+  <div class="ticket-nav">
+    <div class="brand">
+      <div class="stamp">H</div>
+      <h1>Hum<span>safar</span></h1>
+    </div>
+    <div class="stations" id="stations">
+      <div class="station active" data-step="0">01 LOGIN</div>
+      <div class="station" data-step="1">02 PASAND</div>
+      <div class="station" data-step="2">03 SAATHI</div>
+      <div class="station" data-step="3">04 AAS-PAAS</div>
+    </div>
+  </div>
+
+  <div class="stage">
+
+    <!-- SCREEN 0: LOGIN -->
+    <div class="screen active" id="screen-0">
+      <div class="eyebrow">Shuruaat</div>
+      <h2 class="headline">Akela chal, saathi<br>khud mil jayega.</h2>
+      <p class="sub">Login karo, apni pasand batao, aur Humsafar tumhe waise hi solo travellers se milayega jo tumhare
+        jaisi hi jagah, tumhare jaisi hi tareekh pe ghumne nikal rahe hain.</p>
+
+      <div class="boarding-pass">
+        <div class="bp-main">
+          <label class="field-label">Naam</label>
+          <input type="text" id="login-name" placeholder="Apna naam likho">
+          <label class="field-label">Email</label>
+          <input type="email" id="login-email" placeholder="tum@example.com">
+          <div style="margin-top:26px;">
+            <button class="btn btn-primary" onclick="doLogin()">Login karo →</button>
+          </div>
+        </div>
+        <div class="bp-stub">
+          <div class="circle-stamp">SOLO<br>PASS</div>
+          <div class="mono" style="font-size:11px; color:var(--muted); text-align:center;">GATE 04<br>HUMSAFAR</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 1: PREFERENCES -->
+    <div class="screen" id="screen-1">
+      <div class="eyebrow">Step 02</div>
+      <h2 class="headline">Batao, tumhe kaisa<br>safar chahiye?</h2>
+      <p class="sub">Jitna sach-sach batao, utna hi accha match milega. Ye sab baad me matching ke kaam aayega.</p>
+
+      <div class="pref-block">
+        <h4>Kahan jana hai?</h4>
+        <div class="search-wrap" id="destination-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="7" stroke="#93A1AE" stroke-width="2" />
+            <path d="M21 21L16.5 16.5" stroke="#93A1AE" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <input type="text" id="destination-input" placeholder="Jahan jana hai wahan ka naam likho... (koi bhi jagah)"
+            autocomplete="off">
+        </div>
+        <div class="suggest-dropdown" id="destination-suggest"></div>
+      </div>
+
+      <div class="pref-block">
+        <h4>Travel style</h4>
+        <div class="tag-input-wrap" id="style-wrap">
+          <div class="tag-pills" id="style-pills"></div>
+          <input type="text" id="style-input"
+            placeholder="Apna style likho aur Enter dabao (jaise: Trekking, Solo food trip...)" autocomplete="off">
+        </div>
+        <div class="chip-group" id="style-suggestions" style="margin-top:10px;">
+          <div class="chip suggest-chip">Adventure / Trekking</div>
+          <div class="chip suggest-chip">Chill & Relax</div>
+          <div class="chip suggest-chip">Food explorer</div>
+          <div class="chip suggest-chip">Photography</div>
+          <div class="chip suggest-chip">Budget backpacking</div>
+        </div>
+      </div>
+
+      <div class="pref-block">
+        <h4>Budget (per din)</h4>
+        <div class="chip-group" data-group="budget">
+          <div class="chip">₹1000 se kam</div>
+          <div class="chip">₹1000–3000</div>
+          <div class="chip">₹3000+</div>
+        </div>
+      </div>
+
+      <div class="pref-block">
+        <h4>Kab jaana hai?</h4>
+        <div class="calendar" id="travel-calendar">
+          <div class="cal-head">
+            <button type="button" class="cal-nav" onclick="calShift(-1)">‹</button>
+            <div class="cal-month mono" id="cal-month-label"></div>
+            <button type="button" class="cal-nav" onclick="calShift(1)">›</button>
+          </div>
+          <div class="cal-weekdays">
+            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div class="cal-selected mono" id="cal-selected-label">Koi date select nahi ki</div>
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <span class="t-title">Main solo travel kar raha/rahi hoon</span>
+          <span class="t-sub">Isse on rakho taaki sirf solo travellers se hi match ho</span>
+        </div>
+        <div class="switch on" id="solo-switch" onclick="this.classList.toggle('on')">
+          <div class="knob"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="goToStep(2); findMatches();">Saathi dhoondo →</button>
+    </div>
+
+    <!-- SCREEN 2: MATCHES -->
+    <div class="screen" id="screen-2">
+      <div class="eyebrow">Step 03</div>
+      <h2 class="headline">Tumhare jaisi hi<br>trip plan kar rahe log</h2>
+      <p class="sub" id="match-sub">In sab ne bhi wahi jagah, waisi hi date aur solo travel choose kiya hai. Jisse baat
+        karni ho, connect bhej do.</p>
+
+      <div id="match-list"></div>
+
+      <button class="btn btn-outline" onclick="goToStep(3)">Aage badho, aas-paas dekho →</button>
+    </div>
+
+    <!-- SCREEN 3: NEARBY -->
+    <div class="screen" id="screen-3">
+      <div class="eyebrow">Step 04</div>
+      <h2 class="headline">Ab batao, abhi<br>kahan ho tum?</h2>
+      <p class="sub">Apna current location daalo — hum tumhe aas-paas ke stay, ghumne ki jagah aur khaane ke thikane
+        dikhayenge, duri aur contact number ke saath.</p>
+
+      <div class="locate-row">
+        <input type="text" id="current-location" placeholder="Jaise: Old Manali Bus Stand, Manali"
+          value="Old Manali Bus Stand, Manali">
+        <button class="btn btn-teal" onclick="loadNearby()">📍 Dhoondo</button>
+      </div>
+
+      <div class="map-frame" id="map-frame">
+        <svg viewBox="0 0 600 260" id="map-svg"></svg>
+      </div>
+
+      <div class="section-title"><span class="dot" style="background:var(--marigold)"></span>Aas-paas ke Stay</div>
+      <div id="stay-list"></div>
+
+      <div class="section-title"><span class="dot" style="background:var(--teal)"></span>Ghumne ki jagah</div>
+      <div id="attraction-list"></div>
+
+      <div class="section-title"><span class="dot" style="background:var(--rust)"></span>Khaane ke thikane</div>
+      <div id="food-list"></div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    Ye ek prototype hai, isme mock/demo data use ho raha hai. Real website ke liye chahiye hoga: user login/database
+    (backend), real matching system (server pe), aur Google Maps / Places jaisa real map & location API.
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- This links to your Javascript file -->
+  <script src="script_v1.js"></script>
+
+</body>
+
+</html>

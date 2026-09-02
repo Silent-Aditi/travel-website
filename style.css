@@ -282,7 +282,7 @@ body {
   margin-top: 0;
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"], input[type="email"], input[type="password"] {
   width: 100%;
   padding: 14px 20px;
   border-radius: 12px;
@@ -295,7 +295,7 @@ input[type="text"], input[type="email"] {
   transition: var(--transition);
 }
 
-input[type="text"]:focus, input[type="email"]:focus {
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
   border-color: var(--teal);
   box-shadow: 0 0 0 4px rgba(0, 108, 116, 0.1);
 }

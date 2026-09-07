@@ -16,7 +16,17 @@ function renderTable(submissions) {
 }
 
 function escapeHtml(str) {
-  return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+   return str.replace(
+     /[&<>"']/g,
+     (c) =>
+       ({
+         "&": "&amp;",
+         "<": "&lt;",
+         ">": "&gt;",
+         '"': "&quot;",
+         "'": "&#39;",
+       })[c],
+   );
 }
 
 async function load() {
